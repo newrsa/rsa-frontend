@@ -125,7 +125,7 @@ export default function Home() {
               <p className="para-text">
                 Right Step Ahead helps people think through life and career decisions early—combining
                 experienced <span className="text-gradient fw-500">human</span> guidance with a powerful <span className="text-gradient fw-500">AI‑driven</span>
-                decision <span className="text-gradient fw-500">Intelligence engine</span> to systematically eliminate paths that don’t fit, before they become costly to reverse.
+                decision <span className="text-gradient fw-500">Intelligence engine</span> to systematically eliminate paths that don’t fit, before they become costly to reverseee.
               </p>
 
               <button className="btn2-gredient mt-3">
