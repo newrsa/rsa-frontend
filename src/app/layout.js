@@ -1,6 +1,5 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import Script from "next/script";
 
 export const metadata = {
   title: "RightStepAhead",
@@ -8,36 +7,36 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
- 
   return (
-    // <html lang="en">
-    //   <body className={`${geistSans.variable} ${geistMono.variable}`}>
-    //     {children}
-    //   </body>
-    // </html>
     <html lang="en">
       <head>
-
         {/* Bootstrap CSS */}
         <link
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
         />
-        {/* <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-        /> */}
-        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"></link>
 
+        {/* AOS CSS */}
+        <link
+          href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+          rel="stylesheet"
+        />
       </head>
 
       <body>
-        
         {children}
 
         {/* Bootstrap JS */}
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <Script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+          strategy="afterInteractive"
+        />
+
+        {/* AOS JS */}
+        <Script
+          src="https://unpkg.com/aos@2.3.1/dist/aos.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

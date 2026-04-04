@@ -102,20 +102,6 @@ export default function Home() {
               <h2 className="fw-bold">
                 Decoding <span className="text-green">Aspirations</span>
               </h2>
-              {/* <h2 className="fw-bold">
-                Decoding{" "}
-                <span className="text-green">
-                  <Typewriter
-                    words={["Aspirations"]}
-                    loop={true}
-                    cursor
-                    cursorStyle="|"
-                    typeSpeed={150}
-                    deleteSpeed={50}
-                    delaySpeed={1200}
-                  />
-                </span>
-              </h2> */}
 
               <p className="hero-title">
                 Most people <span className="text-blue fw-500">don't struggle</span> because they lack talent.
