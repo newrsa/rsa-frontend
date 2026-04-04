@@ -16,11 +16,11 @@ export default function Home() {
   const [active, setActive] = useState("");
   useEffect(() => {
     SwiperCore.use([Navigation]);
-    // AOS.init({
-    //   duration: 1000,
-    //   once: false,
-    // }
-    // );
+    AOS.init({
+      duration: 1000,
+      once: false,
+    }
+    );
     const handleScroll = () => {
       const sections = document.querySelectorAll("section");
       sections.forEach((section) => {
