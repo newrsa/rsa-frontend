@@ -1,35 +1,51 @@
-name: Auto Deploy to MilesWeb
+  # name: Auto Deploy to MilesWeb
 
-on:
-  push:
-    branches:
-      - main
+  # on:
+  #   push:
+  #     branches:
+  #       - main
 
-jobs:
-  build-deploy:
-    runs-on: ubuntu-latest
+  # jobs:
+  #   build-deploy:
+  #     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+  #     steps:
+  #       - name: Checkout Code
+  #         uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
+  #       - name: Setup Node
+  #         uses: actions/setup-node@v3
+  #         with:
+  #           node-version: 20
 
-      - name: Install Dependencies
-        run: npm install
+  #       - name: Install Dependencies
+  #         run: npm install
 
-      - name: Build Project
-        run: npm run build
+  #       - name: Build Project
+  #         run: npm run build
 
-      - name: Deploy to Server (FTP)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: out/
-          server-dir: /public_html/
-          dangerous-clean-slate: true
+  #       - name: Deploy to Server (FTP)
+  #         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+  #         with:
+  #           server: ${{ secrets.FTP_SERVER }}
+  #           username: ${{ secrets.FTP_USERNAME }}
+  #           password: ${{ secrets.FTP_PASSWORD }}
+  #           local-dir: out/
+  #           server-dir: /public_html/
+  #           dangerous-clean-slate: true
+
+- name: Build Project
+  run: |
+    npm install
+    npm run build
+    npx next export
+
+- name: Deploy to FTP
+  uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+  with:
+    server: ${{ secrets.FTP_SERVER }}
+    username: ${{ secrets.FTP_USERNAME }}
+    password: ${{ secrets.FTP_PASSWORD }}
+    local-dir: ./out/
+    server-dir: /public_html/
+    dangerous-clean-slate: true
