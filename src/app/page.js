@@ -16,11 +16,22 @@ export default function Home() {
   const [active, setActive] = useState("");
   useEffect(() => {
     SwiperCore.use([Navigation]);
-    AOS.init({
-      duration: 1000,
-      once: false,
-    }
-    );
+    // AOS initialization commented out temporarily
+    // if (window.AOS) {
+    //   window.AOS.init({
+    //     duration: 1000,
+    //     once: false,
+    //   });
+    // } else {
+    //   setTimeout(() => {
+    //     if (window.AOS) {
+    //       window.AOS.init({
+    //         duration: 1000,
+    //         once: false,
+    //       });
+    //     }
+    //   }, 500);
+    // }
     const handleScroll = () => {
       const sections = document.querySelectorAll("section");
       sections.forEach((section) => {

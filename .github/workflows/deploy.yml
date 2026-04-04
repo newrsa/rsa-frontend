@@ -25,14 +25,27 @@ jobs:
         run: npm run build
 
       - name: Check Build Output
-        run: ls -la out
+        run: |
+          echo "=== Build Output Directory ==="
+          ls -la out/
+          echo ""
+          echo "=== Next.js Chunks Generated ==="
+          find out/_next/static/chunks -type f -name "*.js" 2>/dev/null | head -10
+          echo ""
+          echo "=== First chunk file content (first line) ==="
+          find out/_next/static/chunks -type f -name "*.js" 2>/dev/null | head -1 | xargs head -c 200
 
-      - name: Deploy to FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: Deploy to FTP (Binary Mode)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./out/
           server-dir: /public_html/
-          dangerous-clean-slate: true
+          protocol: ftps
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.DS_Store
+            **/node_modules/**
