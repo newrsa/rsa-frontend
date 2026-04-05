@@ -1,9 +1,13 @@
 const nextConfig = {
   output: "export",
+  basePath: "/public_html",
+  assetPrefix: "/public_html/",
   images: {
     unoptimized: true,
   },
-  // Ensure chunks are properly generated
+  // Turbopack config (Next.js 16+ default bundler)
+  turbopack: {},
+  // Webpack config for build compatibility
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.optimization.splitChunks.cacheGroups = {
