@@ -324,7 +324,7 @@ export default function Home() {
             <div className="itscard itsleft para-textt">
               <div className="row">
                 <div className="col-md-5 col-lg-4">
-                  <img src="./its-img.png" />
+                  <img src="./who-its-1.jpeg" />
                 </div>
                 <div className="col-md-7 col-lg-8">
                   <h5>Aspiration management across life</h5>
@@ -346,7 +346,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="col-md-5 col-lg-4">
-                  <img src="./its-img.png" />
+                  <img src="./who-its-2.jpeg" />
                 </div>
 
               </div>

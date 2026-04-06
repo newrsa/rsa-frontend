@@ -1,7 +1,7 @@
 const nextConfig = {
   output: "export",
-  basePath: "/public_html",
-  assetPrefix: "/public_html/",
+  // basePath: "/public_html",
+  // assetPrefix: "/public_html/",
   images: {
     unoptimized: true,
   },
