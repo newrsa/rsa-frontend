@@ -357,7 +357,7 @@ export default function Home() {
             <div className="itscard itsleft para-textt">
               <div className="row">
                 <div className="col-md-5 col-lg-4">
-                  <img src="./its-img.png" />
+                  <img src="./3rd-img.png" />
                 </div>
                 <div className="col-md-7 col-lg-8">
                   <h5>Breadth of learning and capability</h5>
@@ -377,7 +377,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="col-md-5 col-lg-4">
-                  <img src="./its-img.png" />
+                  <img src="./4th-img.png" />
                 </div>
 
               </div>
