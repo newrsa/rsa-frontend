@@ -1,35 +1,27 @@
-name: Deploy Next.js Static App to EC2
+name: Deploy Dynamic Next.js
 
 on:
   push:
-    branches:
-      - main  
+    branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-node: '18'
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build Static Files
-        run: npm run build
-
-      - name: Deploy to EC2
-        uses: appleboy/scp-action@master
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "out/" # Next.js static output folder
-          target: "/var/www/html"
-          strip_components: 1
+          script: |
+            cd ~/your-repo-folder
+            git pull origin main
+            npm install
+            npm run build
+            # Start or Restart the app with PM2
+            pm2 delete next-app || true
+            pm2 start npm --name "next-app" -- start  
