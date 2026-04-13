@@ -2,48 +2,24 @@ name: Deploy Dynamic Next.js
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build Project
-        run: npm run build
-
-      - name: Deploy to EC2 via SSH
-        uses: appleboy/ssh-action@v1.0.0
+      - name: SSH and Deploy
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ubuntu/rsa-frontend
-
-            echo "Pull latest code"
+            cd ~/rsa-frontend
             git pull origin main
-
-            echo "Install dependencies"
             npm install
-
-            echo "Build project"
             npm run build
-
-            echo "Restart PM2"
-            pm2 delete next-app || true
-            pm2 start npm --name "next-app" -- start
-            pm2 save
+            pm2 restart next-app
