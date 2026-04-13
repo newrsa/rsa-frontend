@@ -10,25 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 🟢 Step 1: Checkout code
+      # Step 1: Checkout code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # 🟢 Step 2: Setup Node
+      # Step 2: Setup Node
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # 🟢 Step 3: Install dependencies
+      # Step 3: Install dependencies
       - name: Install Dependencies
         run: npm install
 
-      # 🟢 Step 4: Build project
+      # Step 4: Build project
       - name: Build Project
         run: npm run build
 
-      # 🟢 Step 5: Deploy to EC2
+      # Step 5: Deploy to EC2
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -38,10 +38,16 @@ jobs:
           script: |
             cd /home/ubuntu/rsa-frontend
 
+            echo "Pull latest code"
             git pull origin main
+
+            echo "Install dependencies"
             npm install
+
+            echo "Build project"
             npm run build
 
+            echo "Restart PM2"
             pm2 delete next-app || true
             pm2 start npm --name "next-app" -- start
             pm2 save
