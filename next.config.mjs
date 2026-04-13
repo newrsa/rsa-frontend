@@ -4,6 +4,7 @@ const nextConfig = {
   // assetPrefix: "/public_html/",
   images: {
     unoptimized: true,
+    
   },
   // Turbopack config (Next.js 16+ default bundler)
   turbopack: {},
