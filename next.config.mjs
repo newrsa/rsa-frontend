@@ -8,7 +8,6 @@ const nextConfig = {
 
   turbopack: {},
 
-  // assetPrefix मत use करो जब तक subfolder deploy नहीं कर रहे
 };
 
 export default nextConfig;
