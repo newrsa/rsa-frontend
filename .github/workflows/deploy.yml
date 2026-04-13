@@ -1,17 +1,29 @@
-name: Deploy Dynamic Next.js
-
+name: Deploy Next.js (Low RAM Fix)
 on:
   push:
     branches: [ main ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      
+      - name: Install & Build
+        run: |
+          npm install
+          npm run build
 
-      - name: SSH and Deploy
+      - name: Deploy to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: ".next/,public/,package.json,package-lock.json,next.config.js"
+          target: "~/rsa-frontend"
+
+      - name: Restart PM2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -19,7 +31,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/rsa-frontend
-            git pull origin main
-            npm install
-            npm run build
-            pm2 restart next-app
+            npm install --production
+            pm2 restart next-app || pm2 start npm --name "next-app" -- start
