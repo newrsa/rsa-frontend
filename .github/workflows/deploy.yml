@@ -11,7 +11,7 @@ jobs:
       
       - name: Install & Build
         run: |
-          npm install
+          npm ci
           npm run build
 
       - name: Deploy to EC2
@@ -29,6 +29,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          command_timeout: 10m
           script: |
             cd ~/rsa-frontend
             npm install --production
