@@ -117,6 +117,7 @@ export default function Home() {
 
               <button className="btn2-gredient mt-3">
                 <span className="text-gradient fw-500">Explore</span>
+                
               </button>
             </div>
 
