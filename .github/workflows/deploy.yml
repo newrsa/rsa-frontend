@@ -32,7 +32,25 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           command_timeout: 10m
-          script: |
-            cd ~/rsa-frontend
-            npm install --production
-            pm2 restart next-app || pm2 start npm --name "next-app" -- start
+    script: |
+      # 1. Node/NVM ka rasta set karein
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      
+      # 2. Project folder mein jayein
+      cd ~/rsa-frontend
+      
+      # 3. Code update karein
+      git pull origin main
+      
+      # 4. Dependencies install karein (Fast method)
+      npm ci --production
+      
+      # 5. Build (t3.small ki RAM bachane ke liye limit ke sath)
+      export NODE_OPTIONS="--max-old-space-size=1024"
+      npm run build
+      
+      # 6. PM2 Restart (Agar pehli baar hai toh start karega)
+      pm2 restart all || pm2 start npm --name "rsa-frontend" -- start
+
+            
