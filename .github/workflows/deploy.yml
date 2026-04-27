@@ -1,46 +1,50 @@
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+name: Auto Deploy to MilesWeb
+
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
+  build-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Install & Build
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Next.js Static Site
+        run: npm run build
+
+      - name: Check Build Output
         run: |
-          npm ci
-          npm run build
+          echo "=== Build Output Directory ==="
+          ls -la out/
+          echo ""
+          echo "=== Next.js Chunks Generated ==="
+          find out/_next/static/chunks -type f -name "*.js" 2>/dev/null | head -10
+          echo ""
+          echo "=== First chunk file content (first line) ==="
+          find out/_next/static/chunks -type f -name "*.js" 2>/dev/null | head -1 | xargs head -c 200
 
-      - name: Deploy to EC2
-        uses: appleboy/scp-action@v0.1.7
+      - name: Deploy to FTP (Binary Mode)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: ".next/,public/,package.json,package-lock.json,next.config.js"
-          target: "~/rsa-frontend"
-
-      - name: Restart PM2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          command_timeout: 10m
-          script: |
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            
-            cd ~/rsa-frontend
-            
-            # Note: scp-action pehle hi files bhej raha hai, 
-            # isliye git pull ki shayad zaroorat na ho agar 
-            # aap sirf files transfer kar rahe hain.
-            
-            npm ci --production
-            export NODE_OPTIONS="--max-old-space-size=1024"
-            pm2 restart all || pm2 start npm --name "rsa-frontend" -- start
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./out/
+          server-dir: /
+          protocol: ftps
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.DS_Store
+            **/node_modules/**
