@@ -82,8 +82,8 @@ export default function Home() {
                   <img src="./chevron-down.png" />
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a className="dropdown-item" href="#">Login</a></li>
-                  <li><a className="dropdown-item" href="#">Sign In</a></li>
+                  <li><a className="dropdown-item" href="https://rightstepahead.in/rsa-prototype/">Login</a></li>
+                  <li><a className="dropdown-item" href="https://rightstepahead.in/rsa-prototype/">Sign In</a></li>
                 </ul>
               </li>
             </ul>
